@@ -20,7 +20,7 @@ FRED_API_KEY = "your_actual_api_key_here"
 ## Installation
 1. Clone this repository:
    ```bash
-   git clone [https://github.com/yourusername/your-repo-name.git](https://github.com/yourusername/your-repo-name.git)
+   git clone [https://github.com/gordogecko/FRED_Watch.git]
    cd your-repo-name
 
 ## Install dependencies
