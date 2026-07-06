@@ -12,8 +12,25 @@ An interactive dashboard built with Streamlit that aggregates macro-economic dat
 1. **FRED API Key**: You must obtain a free API key from the [FRED API website](https://fred.stlouisfed.org/docs/api/api_key.html).
 2. **Environment**: Ensure you have Python 3.9+ installed.
 
+## Set up your API key:
+Create a .streamlit/secrets.toml file in your project root.
+Add your key:
+FRED_API_KEY = "your_actual_api_key_here"
+
 ## Installation
 1. Clone this repository:
    ```bash
    git clone [https://github.com/yourusername/your-repo-name.git](https://github.com/yourusername/your-repo-name.git)
    cd your-repo-name
+
+## Install dependencies
+pip install -r requirements.txt
+
+## Running the App
+streamlit run fredWatch.py
+
+
+
+
+
+
