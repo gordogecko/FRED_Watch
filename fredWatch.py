@@ -71,12 +71,21 @@ def get_macro_data():
         'Nikkei 225': 'NIKKEI225'
     }
 
+    from concurrent.futures import ThreadPoolExecutor
+
     data = {}
-    for name, code in series_codes.items():
+    def fetch_series(name, code):
         try:
-            data[name] = fred.get_series(code)
-        except Exception as e:
-            st.warning(f"Could not fetch {name}: {e}")
+            return name, fred.get_series(code)
+        except Exception:
+            return name, None
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = [executor.submit(fetch_series, name, code) for name, code in series_codes.items()]
+        for future in futures:
+            name, series = future.result()
+            if series is not None:
+                data[name] = series
 
     df = pd.DataFrame(data)
     # Forward-fill ensures different reporting frequencies plot seamlessly together
@@ -112,12 +121,21 @@ def get_corp_bond_data():
         "30-Year HQM Corporate Bond Spot Rate": "HQMCB30YR",
     }
 
+    from concurrent.futures import ThreadPoolExecutor
+
     data = {}
-    for name, code in corp_bond_codes.items():
+    def fetch_series(name, code):
         try:
-            data[name] = fred.get_series(code)
+            return name, fred.get_series(code)
         except Exception:
-            pass  # Suppress individual failures to keep app clean
+            return name, None
+
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = [executor.submit(fetch_series, name, code) for name, code in corp_bond_codes.items()]
+        for future in futures:
+            name, series = future.result()
+            if series is not None:
+                data[name] = series
 
     df = pd.DataFrame(data)
     return df.ffill().loc['2015-01-01':]
